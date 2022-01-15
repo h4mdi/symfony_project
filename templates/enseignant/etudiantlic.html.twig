@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="FR" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <!-- ===============================================-->
+    <!--    Document Title-->
+    <!-- ===============================================-->
+    <title>Université SESAME</title>
+
+    {% include('blog/header.html.twig') %}
+
+    <!-- ===============================================-->
+    <!--    Favicons-->
+    <!-- ===============================================-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</head>
+
+
+<body>
+<!-- ===============================================-->
+<!--    Main Content-->
+<!-- ===============================================-->
+<main class="main" id="top">
+    <div class="container" data-layout="container">
+        <script>
+            var isFluid = JSON.parse(localStorage.getItem('isFluid'));
+            if (isFluid) {
+                var container = document.querySelector('[data-layout]');
+                container.classList.remove('container');
+                container.classList.add('container-fluid');
+            }
+        </script>
+        {% include('blog/navbar.html.twig') %}
+        <div class="content">
+            {% include('blog/head_profile.html.twig') %}
+
+            <div class="card mb-3" id="ordersTable" data-list='{"valueNames":["order","date","address","status","amount"],"page":10,"pagination":true}'>
+                <div class="card-header bg-light">
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <h5 class="mb-0" id="followers">Etudiants Licence <span class="d-none d-sm-inline-block">({{elic|length}})</span></h5>
+                        </div>
+                        <div class="col">
+                            <form>
+                                <div class="row g-0">
+                                    <div class="col">
+                                        <input class="form-control form-control-sm" type="text" placeholder="Search..." />
+                                    </div>
+                                    <div class="col d-md-block d-none">
+                                        <select class="form-select form-select-sm ms-2" aria-label=".form-select-sm example">
+                                            <option selected="selected">All followers</option>
+                                            <option>Concert Choir</option>
+                                            <option>Clubchem</option>
+                                            <option>Chamber Music Society</option>
+                                            <option>Alpha Chi Omega</option>
+                                            <option>Alpine Ski Club</option>
+                                            <option>Career Club</option>
+                                            <option>Musical Club</option>
+                                            <option>Asymptones</option>
+                                            <option>Clubchem</option>
+                                            <option>Brain Trust</option>
+                                            <option>Other</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body bg-light px-1 py-0">
+                    <div class="row g-0 text-center fs--1">
+                        {% for etud in elic  %}
+                        <div class="col-6 col-md-4 col-lg-3 col-xxl-2 mb-1">
+                            <div class="bg-white dark__bg-1100 p-3 h-100"><a href="../../pages/user/profile.html"><img class="img-thumbnail img-fluid rounded-circle mb-3 shadow-sm" src="../../assets/img/team/1.jpg" alt="" width="100" /></a>
+                                <h6 class="mb-1"><a href="{{path('profile',{id:etud.id}) }}">{{ etud.nom ~ etud.prenom }}</a>
+                                </h6>
+                                <p class="fs--2 mb-1"><a class="text-700" href="#!">{{ etud.promotion }}</a></p>
+                            </div>
+                        </div>
+                 {% endfor %}
+                    </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="d-flex align-items-center justify-content-center">
+                        <button class="btn btn-sm btn-falcon-default me-1" type="button" title="Previous" data-list-pagination="prev"><span class="fas fa-chevron-left"></span></button>
+                        <ul class="pagination mb-0"></ul>
+                        <button class="btn btn-sm btn-falcon-default ms-1" type="button" title="Next" data-list-pagination="next"><span class="fas fa-chevron-right">             </span></button>
+                    </div>
+                </div>
+
+            </div>
+            <footer class="footer">
+                <div class="row g-0 justify-content-between fs--1 mt-4 mb-3">
+                    <div class="col-12 col-sm-auto text-center">
+                        <p class="mb-0 text-600">Thank you for creating with Falcon <span class="d-none d-sm-inline-block">| </span><br class="d-sm-none" /> 2021 &copy; <a href="https://themewagon.com">Themewagon</a></p>
+                    </div>
+                    <div class="col-12 col-sm-auto text-center">
+                        <p class="mb-0 text-600">v3.4.0</p>
+                    </div>
+                </div>
+            </footer>
+        </div>
+        <div class="modal fade" id="authentication-modal" tabindex="-1" role="dialog" aria-labelledby="authentication-modal-label" aria-hidden="true">
+            <div class="modal-dialog mt-6" role="document">
+                <div class="modal-content border-0">
+                    <div class="modal-header px-5 position-relative modal-shape-header bg-shape">
+                        <div class="position-relative z-index-1 light">
+                            <h4 class="mb-0 text-white" id="authentication-modal-label">Register</h4>
+                            <p class="fs--1 mb-0 text-white">Please create your free Falcon account</p>
+                        </div>
+                        <button class="btn-close btn-close-white position-absolute top-0 end-0 mt-2 me-2" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body py-4 px-5">
+                        <form>
+                            <div class="mb-3">
+                                <label class="form-label" for="modal-auth-name">Name</label>
+                                <input class="form-control" type="text" autocomplete="on" id="modal-auth-name" />
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label" for="modal-auth-email">Email address</label>
+                                <input class="form-control" type="email" autocomplete="on" id="modal-auth-email" />
+                            </div>
+                            <div class="row gx-2">
+                                <div class="mb-3 col-sm-6">
+                                    <label class="form-label" for="modal-auth-password">Password</label>
+                                    <input class="form-control" type="password" autocomplete="on" id="modal-auth-password" />
+                                </div>
+                                <div class="mb-3 col-sm-6">
+                                    <label class="form-label" for="modal-auth-confirm-password">Confirm Password</label>
+                                    <input class="form-control" type="password" autocomplete="on" id="modal-auth-confirm-password" />
+                                </div>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="modal-auth-register-checkbox" />
+                                <label class="form-label" for="modal-auth-register-checkbox">I accept the <a href="#!">terms </a>and <a href="#!">privacy policy</a></label>
+                            </div>
+                            <div class="mb-3">
+                                <button class="btn btn-primary d-block w-100 mt-3" type="submit" name="submit">Register</button>
+                            </div>
+                        </form>
+                        <div class="position-relative mt-5">
+                            <hr class="bg-300" />
+                            <div class="divider-content-center">or register with</div>
+                        </div>
+                        <div class="row g-2 mt-2">
+                            <div class="col-sm-6"><a class="btn btn-outline-google-plus btn-sm d-block w-100" href="#"><span class="fab fa-google-plus-g me-2" data-fa-transform="grow-8"></span> google</a></div>
+                            <div class="col-sm-6"><a class="btn btn-outline-facebook btn-sm d-block w-100" href="#"><span class="fab fa-facebook-square me-2" data-fa-transform="grow-8"></span> facebook</a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--
+Dark-->
+        <script>
+            var appCalendarInit = function appCalendarInit() {
+                var Selectors = {
+                    ACTIVE: '.active',
+                    ADD_EVENT_FORM: '#addEventForm',
+                    ADD_EVENT_MODAL: '#addEventModal',
+                    CALENDAR: '#appCalendar',
+                    CALENDAR_TITLE: '.calendar-title',
+                    DATA_CALENDAR_VIEW: '[data-fc-view]',
+                    DATA_EVENT: '[data-event]',
+                    DATA_VIEW_TITLE: '[data-view-title]',
+                    EVENT_DETAILS_MODAL: '#eventDetailsModal',
+                    EVENT_DETAILS_MODAL_CONTENT: '#eventDetailsModal .modal-content',
+                    EVENT_START_DATE: '#addEventModal [name="startDate"]',
+                    INPUT_TITLE: '[name="title"]'
+                };
+                var Events = {
+                    CLICK: 'click',
+                    SHOWN_BS_MODAL: 'shown.bs.modal',
+                    SUBMIT: 'submit'
+                };
+                var DataKeys = {
+                    EVENT: 'event',
+                    FC_VIEW: 'fc-view'
+                };
+                var ClassNames = {
+                    ACTIVE: 'active'
+                };
+
+                var updateTitle = function updateTitle(title) {
+                    document.querySelector(Selectors.CALENDAR_TITLE).textContent = title;
+                };
+
+                var appCalendar = document.querySelector(Selectors.CALENDAR);
+                var addEventForm = document.querySelector(Selectors.ADD_EVENT_FORM);
+                var addEventModal = document.querySelector(Selectors.ADD_EVENT_MODAL);
+                var eventDetailsModal = document.querySelector(Selectors.EVENT_DETAILS_MODAL);
+
+
+                addEventModal && addEventModal.addEventListener(Events.SHOWN_BS_MODAL, function (_ref13) {
+                    var currentTarget = _ref13.currentTarget;
+                    currentTarget.querySelector(Selectors.INPUT_TITLE).focus();
+                });
+            };
+
+        </script>
+    </div>
+</main>
+<!-- ===============================================-->
+<!--    End of Main Content-->
+<!-- ===============================================-->
+
+{% include('blog/footer.html.twig') %}
+
+<script src="jquery.js"></script>
+
+</body>
+
+</html>

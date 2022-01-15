@@ -1,0 +1,9 @@
+{% block title %}New Pfe{% endblock %}
+
+{% block body %}
+    <h1>Create new Pfe</h1>
+
+    {{ include('pfe_ct/_form.html.twig') }}
+
+    <a href="{{ path('pfe_ct_index') }}">back to list</a>
+{% endblock %}

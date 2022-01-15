@@ -1,0 +1,11 @@
+{% block title %}Edit Calend{% endblock %}
+
+{% block body %}
+    <h1>Edit Calend</h1>
+
+    {{ include('calender/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('calender_index') }}">back to list</a>
+
+    {{ include('calender/_delete_form.html.twig') }}
+{% endblock %}

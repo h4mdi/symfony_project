@@ -1,0 +1,6 @@
+#index:
+#    path: /
+#    controller: App\Controller\DefaultController::index
+blog:
+  path:      /emploi
+  defaults:  { _controller: NumberCubedBundle:Default:index }

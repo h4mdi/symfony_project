@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="FR" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <!-- ===============================================-->
+    <!--    Document Title-->
+    <!-- ===============================================-->
+    <title>Université SESAME</title>
+
+    {% include('blog/header.html.twig') %}
+
+    <!-- ===============================================-->
+    <!--    Favicons-->
+    <!-- ===============================================-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</head>
+
+
+<body>
+<!-- ===============================================-->
+<!--    Main Content-->
+<!-- ===============================================-->
+<main class="main" id="top">
+    <div class="container" data-layout="container">
+        <script>
+            var isFluid = JSON.parse(localStorage.getItem('isFluid'));
+            if (isFluid) {
+                var container = document.querySelector('[data-layout]');
+                container.classList.remove('container');
+                container.classList.add('container-fluid');
+            }
+        </script>
+        {% include('blog/navbar.html.twig') %}
+        <div class="content">
+            {% include('blog/head_profile.html.twig') %}
+
+            <div class="card mb-3">
+                <div class="card-body">
+                    <div class="row flex-between-center">
+                        <div class="col-md">
+                            <h5 class="mb-2 mb-md-0">Information Enseignant</h5>
+                        </div>
+                        <div class="col-auto">
+                            <button class="btn btn-falcon-default btn-sm me-2">{{ button_label|default('Enregistrer') }}</button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card cover-image mb-3"><img class="card-img-top" src="{{ asset('assets/img/generic/sesam.jpg') }}" alt="" />
+                <input class="d-none" id="upload-cover-image" type="file" />
+                <label class="cover-image-file-input" for="upload-cover-image"><span class="fas fa-camera me-2"></span><span>Change cover photo</span></label>
+            </div>
+            <div class="row g-0">
+                <div class="col-lg-12 pe-lg-2">
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            <h5 class="mb-0">Informations Enseignant</h5>
+                        </div>
+                        <div class="card-body bg-light">
+                            {{ form_start(form) }}
+
+                                <div class="row gx-2">
+                                    <div class="col-sm-6 mb-3">
+                                        <label class="form-label" for="event-name">Nom</label>
+                                        {{ form_widget(form.nom, {'attr': {'class': 'form-control'}}) }}
+                                    </div>
+                                    <div class="col-sm-6 mb-3">
+                                        <label class="form-label" for="event-name">Prénom</label>
+                                        {{ form_widget(form.prenom, {'attr': {'class': 'form-control'}}) }}
+                                    </div>
+                                    <div class="col-12 mb-3">
+                                        <label class="form-label" for="start-date">Date de Naissance</label>
+                                        {{ form_widget(form.datenaiss, {'attr': {'class': 'form-control ','placeholder':'d/m/y','id':'start-date','data-options':'{"enableTime":true,"noCalendar":true,"dateFormat":"H:i","disableMobile":true}'}}) }}
+
+                                    </div>
+                                    <div class="col-sm-6 mb-3">
+                                        <label class="form-label" for="start-time">CIN</label>
+                                        {{ form_widget(form.cin, {'attr': {'class': 'form-control ','placeholder':'d/m/y','id':'start-date','data-options':'{"enableTime":true,"noCalendar":true,"dateFormat":"H:i","disableMobile":true}'}}) }}
+
+                                    </div>
+                                    <div class="col-sm-6 mb-3">
+                                        <label class="form-label" for="end-date">Grade</label>
+                                        {{ form_widget(form.grade, {'attr': {'class': 'form-control ','placeholder':'d/m/y','id':'start-date','data-options':'{"enableTime":true,"noCalendar":true,"dateFormat":"H:i","disableMobile":true}'}}) }}
+
+                                    </div>
+                                    <div class="col-sm-6 mb-3">
+                                        <label class="form-label" for="end-time">Specialité</label>
+                                        {{ form_widget(form.specialite, {'attr': {'class': 'form-control ','placeholder':'d/m/y','id':'start-date','data-options':'{"enableTime":true,"noCalendar":true,"dateFormat":"H:i","disableMobile":true}'}}) }}
+
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label class="form-label" for="registration-deadline">Télephone</label>
+                                        {{ form_widget(form.tel, {'attr': {'class': 'form-control ','placeholder':'d/m/y','id':'start-date','data-options':'{"enableTime":true,"noCalendar":true,"dateFormat":"H:i","disableMobile":true}'}}) }}
+
+                                    </div>
+
+                                </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="card mt-3">
+                <div class="card-body">
+                    <div class="row justify-content-between align-items-center">
+                        <div class="col-md">
+                            <h5 class="mb-2 mb-md-0">Veuillez remplissez attentivement ces données SVP !</h5>
+                        </div>
+                        <div class="col-auto">
+                            <button class="btn btn-falcon-default btn-sm me-2">{{ button_label|default('Enregistrer') }}</button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{ form_end(form) }}
+
+            <footer class="footer">
+                <div class="row g-0 justify-content-between fs--1 mt-4 mb-3">
+                    <div class="col-12 col-sm-auto text-center">
+                        <p class="mb-0 text-600">Thank you for creating with Falcon <span class="d-none d-sm-inline-block">| </span><br class="d-sm-none" /> 2021 &copy; <a href="https://themewagon.com">Themewagon</a></p>
+                    </div>
+                    <div class="col-12 col-sm-auto text-center">
+                        <p class="mb-0 text-600">v3.4.0</p>
+                    </div>
+                </div>
+            </footer>
+        </div>
+        <div class="modal fade" id="authentication-modal" tabindex="-1" role="dialog" aria-labelledby="authentication-modal-label" aria-hidden="true">
+            <div class="modal-dialog mt-6" role="document">
+                <div class="modal-content border-0">
+                    <div class="modal-header px-5 position-relative modal-shape-header bg-shape">
+                        <div class="position-relative z-index-1 light">
+                            <h4 class="mb-0 text-white" id="authentication-modal-label">Register</h4>
+                            <p class="fs--1 mb-0 text-white">Please create your free Falcon account</p>
+                        </div>
+                        <button class="btn-close btn-close-white position-absolute top-0 end-0 mt-2 me-2" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body py-4 px-5">
+                        <form>
+                            <div class="mb-3">
+                                <label class="form-label" for="modal-auth-name">Name</label>
+                                <input class="form-control" type="text" autocomplete="on" id="modal-auth-name" />
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label" for="modal-auth-email">Email address</label>
+                                <input class="form-control" type="email" autocomplete="on" id="modal-auth-email" />
+                            </div>
+                            <div class="row gx-2">
+                                <div class="mb-3 col-sm-6">
+                                    <label class="form-label" for="modal-auth-password">Password</label>
+                                    <input class="form-control" type="password" autocomplete="on" id="modal-auth-password" />
+                                </div>
+                                <div class="mb-3 col-sm-6">
+                                    <label class="form-label" for="modal-auth-confirm-password">Confirm Password</label>
+                                    <input class="form-control" type="password" autocomplete="on" id="modal-auth-confirm-password" />
+                                </div>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="modal-auth-register-checkbox" />
+                                <label class="form-label" for="modal-auth-register-checkbox">I accept the <a href="#!">terms </a>and <a href="#!">privacy policy</a></label>
+                            </div>
+                            <div class="mb-3">
+                                <button class="btn btn-primary d-block w-100 mt-3" type="submit" name="submit">Register</button>
+                            </div>
+                        </form>
+                        <div class="position-relative mt-5">
+                            <hr class="bg-300" />
+                            <div class="divider-content-center">or register with</div>
+                        </div>
+                        <div class="row g-2 mt-2">
+                            <div class="col-sm-6"><a class="btn btn-outline-google-plus btn-sm d-block w-100" href="#"><span class="fab fa-google-plus-g me-2" data-fa-transform="grow-8"></span> google</a></div>
+                            <div class="col-sm-6"><a class="btn btn-outline-facebook btn-sm d-block w-100" href="#"><span class="fab fa-facebook-square me-2" data-fa-transform="grow-8"></span> facebook</a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--
+      Dark-->
+        <script>
+            var appCalendarInit = function appCalendarInit() {
+                var Selectors = {
+                    ACTIVE: '.active',
+                    ADD_EVENT_FORM: '#addEventForm',
+                    ADD_EVENT_MODAL: '#addEventModal',
+                    CALENDAR: '#appCalendar',
+                    CALENDAR_TITLE: '.calendar-title',
+                    DATA_CALENDAR_VIEW: '[data-fc-view]',
+                    DATA_EVENT: '[data-event]',
+                    DATA_VIEW_TITLE: '[data-view-title]',
+                    EVENT_DETAILS_MODAL: '#eventDetailsModal',
+                    EVENT_DETAILS_MODAL_CONTENT: '#eventDetailsModal .modal-content',
+                    EVENT_START_DATE: '#addEventModal [name="startDate"]',
+                    INPUT_TITLE: '[name="title"]'
+                };
+                var Events = {
+                    CLICK: 'click',
+                    SHOWN_BS_MODAL: 'shown.bs.modal',
+                    SUBMIT: 'submit'
+                };
+                var DataKeys = {
+                    EVENT: 'event',
+                    FC_VIEW: 'fc-view'
+                };
+                var ClassNames = {
+                    ACTIVE: 'active'
+                };
+
+                var updateTitle = function updateTitle(title) {
+                    document.querySelector(Selectors.CALENDAR_TITLE).textContent = title;
+                };
+
+                var appCalendar = document.querySelector(Selectors.CALENDAR);
+                var addEventForm = document.querySelector(Selectors.ADD_EVENT_FORM);
+                var addEventModal = document.querySelector(Selectors.ADD_EVENT_MODAL);
+                var eventDetailsModal = document.querySelector(Selectors.EVENT_DETAILS_MODAL);
+
+
+                addEventModal && addEventModal.addEventListener(Events.SHOWN_BS_MODAL, function (_ref13) {
+                    var currentTarget = _ref13.currentTarget;
+                    currentTarget.querySelector(Selectors.INPUT_TITLE).focus();
+                });
+            };
+
+        </script>
+    </div>
+</main>
+<!-- ===============================================-->
+<!--    End of Main Content-->
+<!-- ===============================================-->
+
+{% include('blog/footer.html.twig') %}
+
+<script src="jquery.js"></script>
+<script>
+    $(document).ready(function() {
+        // show the table as soon as the DOM is ready
+        $("#id_data").hide("slow");
+        $("#niving").hide("slow");
+
+        // shows the table on clicking the noted link
+        $("#id_radio1").click(function() {
+            $("#niving").hide("slow");
+            $("#id_data").show("slow");
+        });
+        // hides the table on clicking the noted link
+        $("#id_radio2").click(function() {
+            $("#id_data").hide("slow");
+            $("#niving").show("slow");
+        });
+    });
+    $(document).ready(function(){
+        $("#myInput").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            $("#table-orders-body tr").filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+</script>
+</body>
+
+</html>
+
+
+

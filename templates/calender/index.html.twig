@@ -1,0 +1,50 @@
+
+{% block title %}Calend index{% endblock %}
+
+{% block body %}
+    <h1>Calend index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Titre</th>
+                <th>Debut</th>
+                <th>Fin</th>
+                <th>Description</th>
+                <th>Dall_days</th>
+                <th>Bg_color</th>
+                <th>Text_color</th>
+                <th>Border_color</th>
+                <th>Cours</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for calend in calends %}
+            <tr>
+                <td>{{ calend.id }}</td>
+                <td>{{ calend.titre }}</td>
+                <td>{{ calend.debut ? calend.debut|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ calend.fin ? calend.fin|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ calend.description }}</td>
+                <td>{{ calend.dallDays ? 'Yes' : 'No' }}</td>
+                <td>{{ calend.bgColor }}</td>
+                <td>{{ calend.textColor }}</td>
+                <td>{{ calend.borderColor }}</td>
+                <td>{{ calend.idCours}}</td>
+                <td>
+                    <a href="{{ path('calender_show', {'id': calend.id}) }}">show</a>
+                    <a href="{{ path('calender_edit', {'id': calend.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="10">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('calender_new') }}">Create new</a>
+{% endblock %}

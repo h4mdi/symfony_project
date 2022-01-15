@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="FR" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <!-- ===============================================-->
+    <!--    Document Title-->
+    <!-- ===============================================-->
+    <title>Université SESAME</title>
+
+    {% include('blog/header.html.twig') %}
+
+    <!-- ===============================================-->
+    <!--    Favicons-->
+    <!-- ===============================================-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script src="jquery.twbsPagination.min.js"></script>
+</head>
+
+
+<body>
+<!-- ===============================================-->
+<!--    Main Content-->
+<!-- ===============================================-->
+<main class="main" id="top">
+    <div class="container" data-layout="container">
+        <script>
+            var isFluid = JSON.parse(localStorage.getItem('isFluid'));
+            if (isFluid) {
+                var container = document.querySelector('[data-layout]');
+                container.classList.remove('container');
+                container.classList.add('container-fluid');
+            }
+        </script>
+        {% include('blog/navbar.html.twig') %}
+        <div class="content">
+            {% include('blog/head_profile.html.twig') %}
+            <div class="card mb-3" id="ordersTable" data-list='{"valueNames":["order","date","address","status","amount"],"page":10,"pagination":true}'>
+                <div class="card-header">
+                    <div class="row flex-between-center">
+                        <div class="col-4 col-sm-auto d-flex align-items-center pe-0">
+                            <h5 class="fs-0 mb-0 text-nowrap py-2 py-xl-0">Liste des PFE</h5>
+                        </div>
+                        <div class="col-auto d-flex order-md-0">
+                            <button class="btn btn-primary btn-sm" type="button" data-bs-toggle="modal" data-bs-target="#addEventModal"> <span class="fas fa-plus me-2"></span>Ajouter</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-body p-0">
+                    <div class="table-responsive scrollbar">
+                        <table class="table table-sm table-striped fs--1 mb-0 overflow-hidden" id="myTable">
+                            <thead class="bg-200 text-900">
+                            <tr>
+                                <th class="sort pe-1 align-middle white-space-nowrap" data-sort="order">Etudiant</th>
+                                <th class="sort pe-1 align-middle white-space-nowrap pe-7" data-sort="date">Année</th>
+                                <th class="sort pe-1 align-middle white-space-nowrap" data-sort="address" style="min-width: 12.5rem;">Sujet</th>
+                                <th class="sort pe-1 align-middle white-space-nowrap text-center" data-sort="status">Statut</th>
+                                <th class="sort pe-1 align-middle white-space-nowrap text-end" data-sort="amount">Niveau</th>
+                                <th class="no-sort"></th>
+                            </tr>
+                            </thead>
+                            <tbody class="list" id="table-orders-body">
+                            {% for pfe in pfes %}
+                            <tr class="btn-reveal-trigger">
+                                <td class="order py-2 align-middle white-space-nowrap">
+                                   <strong>{{ pfe.etud.nom }}</strong><br /><a href="mailto:{{ pfe.etud.email }}">{{ pfe.etud.email }}</a></td>
+                                <td class="date py-2 align-middle">{{ pfe.annee}}</td>
+                                <td class="address py-2 align-middle white-space-nowrap">
+                                    {{ pfe.sujet }}
+                                </td>
+                                <td class="status py-2 align-middle text-center fs-0 white-space-nowrap">
+                                    {% if pfe.etat == 1 %}
+                                    <span class="badge badge rounded-pill d-block badge-soft-success">
+                                        Accepté<span class="ms-1 fas fa-check" data-fa-transform="shrink-2"></span></span>
+                                    {% elseif pfe.etat == 2 %}
+                                    <span class="badge badge rounded-pill d-block badge-soft-secondary">
+                                        En cours<span class="ms-1 fas fa-redo fa-spin" data-fa-transform="shrink-2"></span></td>
+                                        {% else %}
+                                            <span class="badge badge rounded-pill d-block badge-soft-danger">
+                                        Réfusé<span class="ms-1 fas fa-ban" data-fa-transform="shrink-2"></span></span>
+
+                                {% endif %}
+                                </td>
+                                <td class="amount py-2 align-middle text-end fs-0 fw-medium">{{ pfe.etud.inscriptions.first.classe.niveau }}</td>
+                                <td class="py-2 align-middle white-space-nowrap text-end">
+                                    <div class="dropdown font-sans-serif position-static">
+                                        <button class="btn btn-link text-600 btn-sm dropdown-toggle btn-reveal" type="button" id="order-dropdown-0" data-bs-toggle="dropdown" data-boundary="viewport" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h fs--1"></span></button>
+                                        <div class="dropdown-menu dropdown-menu-end border py-0" aria-labelledby="order-dropdown-0">
+
+                                            <div class="bg-white py-2">
+                                                {% if pfe.etat==1 %}
+                                                <a class="dropdown-item disabled"   href="{{ path('change_etat', {'id': pfe.getid}) }}">Accepter</a>
+                                                <a class="dropdown-item" href="{{ path('change_etat', {'id': pfe.getid}) }}">Réfuser</a>
+
+                                                {% elseif pfe.etat == 0 %}
+                                                    <a class="dropdown-item"  href="{{ path('change_etat', {'id': pfe.getid}) }}">Accepter</a>
+                                                    <a class="dropdown-item disabled"  href="#!">Réfuser</a>
+                                                {% endif %}
+
+
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor%}
+
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="d-flex align-items-center justify-content-center">
+
+{{ knp_pagination_render(pfes) }}
+
+                    </div>
+                </div>
+            </div>
+            <footer class="footer">
+                <div class="row g-0 justify-content-between fs--1 mt-4 mb-3">
+                    <div class="col-12 col-sm-auto text-center">
+                        <p class="mb-0 text-600">Thank you for creating with Falcon <span class="d-none d-sm-inline-block">| </span><br class="d-sm-none" /> 2021 &copy; <a href="https://themewagon.com">Themewagon</a></tbody>
+                    </div>
+                    <div class="col-12 col-sm-auto text-center">
+                        <p class="mb-0 text-600">v3.4.0</p>
+                    </div>
+                </div>
+            </footer>
+        </div>
+        <div class="modal fade" id="authentication-modal" tabindex="-1" role="dialog" aria-labelledby="authentication-modal-label" aria-hidden="true">
+            <div class="modal-dialog mt-6" role="document">
+                <div class="modal-content border-0">
+                    <div class="modal-header px-5 position-relative modal-shape-header bg-shape">
+                        <div class="position-relative z-index-1 light">
+                            <h4 class="mb-0 text-white" id="authentication-modal-label">Register</h4>
+                            <p class="fs--1 mb-0 text-white">Please create your free Falcon account</p>
+                        </div>
+                        <button class="btn-close btn-close-white position-absolute top-0 end-0 mt-2 me-2" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body py-4 px-5">
+                        <form>
+                            <div class="mb-3">
+                                <label class="form-label" for="modal-auth-name">Name</label>
+                                <input class="form-control" type="text" autocomplete="on" id="modal-auth-name" />
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label" for="modal-auth-email">Email address</label>
+                                <input class="form-control" type="email" autocomplete="on" id="modal-auth-email" />
+                            </div>
+                            <div class="row gx-2">
+                                <div class="mb-3 col-sm-6">
+                                    <label class="form-label" for="modal-auth-password">Password</label>
+                                    <input class="form-control" type="password" autocomplete="on" id="modal-auth-password" />
+                                </div>
+                                <div class="mb-3 col-sm-6">
+                                    <label class="form-label" for="modal-auth-confirm-password">Confirm Password</label>
+                                    <input class="form-control" type="password" autocomplete="on" id="modal-auth-confirm-password" />
+                                </div>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="modal-auth-register-checkbox" />
+                                <label class="form-label" for="modal-auth-register-checkbox">I accept the <a href="#!">terms </a>and <a href="#!">privacy policy</a></label>
+                            </div>
+                            <div class="mb-3">
+                                <button class="btn btn-primary d-block w-100 mt-3" type="submit" name="submit">Register</button>
+                            </div>
+                        </form>
+                        <div class="position-relative mt-5">
+                            <hr class="bg-300" />
+                            <div class="divider-content-center">or register with</div>
+                        </div>
+                        <div class="row g-2 mt-2">
+                            <div class="col-sm-6"><a class="btn btn-outline-google-plus btn-sm d-block w-100" href="#"><span class="fab fa-google-plus-g me-2" data-fa-transform="grow-8"></span> google</a></div>
+                            <div class="col-sm-6"><a class="btn btn-outline-facebook btn-sm d-block w-100" href="#"><span class="fab fa-facebook-square me-2" data-fa-transform="grow-8"></span> facebook</a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="addEventModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form  autocomplete="on"  action="{{ path('affpfe')}}" method="POST">
+                        <div class="modal-header px-card bg-light border-bottom-0">
+                            <h5 class="modal-title">Nouvelle affectation</h5>
+                            <button class="btn-close me-n1" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body p-card">
+                            <div class="mb-3">
+                                <label class="fs-0" for="eventTitle">Titre du sujet</label>
+                                <input class="form-control" id="eventTitle" type="text" name="sujet" required="required" />
+                            </div>
+                            <div class="mb-3">
+                                <label class="fs-0" for="eventTitle">Niveau</label>
+                                <div class="form-check">
+                            Licence<input type="radio" name="name_radio1"  value="lic"  id="id_radio1" />
+
+                            Ingénieur<input type="radio" name="name_radio1" value="ing" id="id_radio2" />
+
+
+                                </div>
+                            </div>
+
+                            <div class="c" id="id_data" >
+                                <label class="fs-0" for="eventLabel">Etudiant Licence</label>
+                                <select class="form-select" id="eventLabel" name="etudLicenceListe">
+
+                                    {% for key,val in etudLicenceListe %}
+                                        <option value="{{val.id}}" >{{val.nom~' '~ val.prenom ~' [ '~  val.niveau ~' ] '}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="c" id="niving" >
+                                <label class="fs-0" for="eventLabel">Etudiant Ingénieur</label>
+                                    <select class="form-select" id="eventLabel" name="etudIngenieurListe">
+
+                                        {% for key,val in etudIngenieurListe %}
+                                            <option value="{{val.id}}" >{{val.nom~' '~ val.prenom ~' [ '~  val.niveau ~' ] '}}</option>
+                                        {% endfor %}
+                                    </select>
+                            </div>
+
+
+
+                            <div class="mb-3">
+                                <label class="fs-0" for="eventLabel">Enseignant</label>
+                                <select class="form-select" id="eventLabel" name="ens">
+
+                                    {% for key,val in ensListe %}
+                                        <option value="{{ val.getid()}}" >{{ val.getnom() ~' '~ val.getPrenom() ~' [ '~  val.getCin()~' ] '}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="fs-0" for="eventDescription">Description</label>
+                                <textarea class="form-control" rows="3" name="description" id="eventDescription"></textarea>
+                            </div>
+
+                        </div>
+                        <button class="btn btn-primary px-4" type="submit">Affecter</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!--
+        Dark-->
+        <script>
+            var appCalendarInit = function appCalendarInit() {
+                var Selectors = {
+                    ACTIVE: '.active',
+                    ADD_EVENT_FORM: '#addEventForm',
+                    ADD_EVENT_MODAL: '#addEventModal',
+                    CALENDAR: '#appCalendar',
+                    CALENDAR_TITLE: '.calendar-title',
+                    DATA_CALENDAR_VIEW: '[data-fc-view]',
+                    DATA_EVENT: '[data-event]',
+                    DATA_VIEW_TITLE: '[data-view-title]',
+                    EVENT_DETAILS_MODAL: '#eventDetailsModal',
+                    EVENT_DETAILS_MODAL_CONTENT: '#eventDetailsModal .modal-content',
+                    EVENT_START_DATE: '#addEventModal [name="startDate"]',
+                    INPUT_TITLE: '[name="title"]'
+                };
+                var Events = {
+                    CLICK: 'click',
+                    SHOWN_BS_MODAL: 'shown.bs.modal',
+                    SUBMIT: 'submit'
+                };
+                var DataKeys = {
+                    EVENT: 'event',
+                    FC_VIEW: 'fc-view'
+                };
+                var ClassNames = {
+                    ACTIVE: 'active'
+                };
+
+                var updateTitle = function updateTitle(title) {
+                    document.querySelector(Selectors.CALENDAR_TITLE).textContent = title;
+                };
+
+                var appCalendar = document.querySelector(Selectors.CALENDAR);
+                var addEventForm = document.querySelector(Selectors.ADD_EVENT_FORM);
+                var addEventModal = document.querySelector(Selectors.ADD_EVENT_MODAL);
+                var eventDetailsModal = document.querySelector(Selectors.EVENT_DETAILS_MODAL);
+
+
+                addEventModal && addEventModal.addEventListener(Events.SHOWN_BS_MODAL, function (_ref13) {
+                    var currentTarget = _ref13.currentTarget;
+                    currentTarget.querySelector(Selectors.INPUT_TITLE).focus();
+                });
+            };
+
+        </script>
+
+    </div>
+</main>
+<!-- ===============================================-->
+<!--    End of Main Content-->
+<!-- ===============================================-->
+
+{% include('blog/footer.html.twig') %}
+
+<script src="jquery.js"></script>
+<script>
+    $(document).ready(function() {
+        // show the table as soon as the DOM is ready
+        $("#id_data").hide("slow");
+        $("#niving").hide("slow");
+
+        // shows the table on clicking the noted link
+        $("#id_radio1").click(function() {
+            $("#niving").hide("slow");
+            $("#id_data").show("slow");
+        });
+        // hides the table on clicking the noted link
+        $("#id_radio2").click(function() {
+            $("#id_data").hide("slow");
+            $("#niving").show("slow");
+        });
+    });
+    $(document).ready(function(){
+        $("#myInput").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            $("#table-orders-body tr").filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+
+    $(document).ready( function () {
+        $('#myTable').DataTable();
+    } );
+
+
+
+    var $pagination = $('#pagination'),
+        totalRecords = 0,
+        records = [],
+        displayRecords = [],
+        recPerPage = 10,
+        page = 1,
+        totalPages = 0;
+    $.ajax({
+        url: "http://dummy.restapiexample.com/api/v1/employees",
+        async: true,
+        dataType: 'json',
+        success: function (data) {
+            records = data;
+            console.log(records);
+            totalRecords = records.length;
+            totalPages = Math.ceil(totalRecords / recPerPage);
+            //apply_pagination();
+        }
+    });
+
+    function generate_table() {
+        var tr;
+        $('#table-orders-body').html('');
+        for (var i = 0; i < displayRecords.length; i++) {
+            tr = $('<tr/>');
+            tr.append("<td>" + displayRecords[i].employee_name + "</td>");
+            tr.append("<td>" + displayRecords[i].employee_salary + "</td>");
+            tr.append("<td>" + displayRecords[i].employee_age + "</td>");
+            $('#table-orders-body').append(tr);
+        }
+    }
+    function apply_pagination() {
+        $pagination.twbsPagination({
+            totalPages: totalPages,
+            visiblePages: 6,
+            onPageClick: function (event, page) {
+                displayRecordsIndex = Math.max(page - 1, 0) * recPerPage;
+                endRec = (displayRecordsIndex) + recPerPage;
+
+                displayRecords = records.slice(displayRecordsIndex, endRec);
+                generate_table();
+            }
+        });
+    }
+
+</script>
+</body>
+
+</html>

@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Pfe{% endblock %}
+
+{% block body %}
+    <h1>Pfe</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ pfe.id }}</td>
+            </tr>
+            <tr>
+                <th>Sujet</th>
+                <td>{{ pfe.sujet }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ pfe.description }}</td>
+            </tr>
+            <tr>
+                <th>Etat</th>
+                <td>{{ pfe.etat }}</td>
+            </tr>
+            <tr>
+                <th>Annee</th>
+                <td>{{ pfe.annee }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('p_index') }}">back to list</a>
+
+    <a href="{{ path('p_edit', {'id': pfe.id}) }}">edit</a>
+
+    {{ include('p/_delete_form.html.twig') }}
+{% endblock %}

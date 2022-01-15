@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Pfe{% endblock %}
+
+{% block body %}
+    <h1>Create new Pfe</h1>
+
+    {{ include('p/_form.html.twig') }}
+
+    <a href="{{ path('p_index') }}">back to list</a>
+{% endblock %}
